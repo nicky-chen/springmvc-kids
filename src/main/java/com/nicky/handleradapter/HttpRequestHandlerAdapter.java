@@ -31,7 +31,7 @@ public class HttpRequestHandlerAdapter implements HandlerAdapter, BeanFactoryAwa
         
         //获取接口的实现
         Map<String, Object> resolvers = getBeanInterfaceImpl(HandlerMethodArgumentResolver.class);
-        
+        //todo HandlerMethodArgumentResolver 可以排序
         int paramIndex = 0, i = 0;
         for (Class<?> paramClazz : paramList) {
             for (Map.Entry<String, Object> entry : resolvers.entrySet()) {
