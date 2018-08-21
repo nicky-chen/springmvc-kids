@@ -9,7 +9,10 @@ import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,18 +24,18 @@ public class HttpRequestHandlerAdapter implements HandlerAdapter, BeanFactoryAwa
     @Override
     public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, HandlerMapping handler) {
 
+        System.out.println(handler);
         Method method = handler.getMethod();
         Class<?>[] paramList = method.getParameterTypes();
         
         Object[] args = new Object[paramList.length];
         
-        //实现了ArgumentResolver这个接口的实现类
-        Map<String, Object> argumentResolvers = getBeanInterfaceImpl(HandlerMethodArgumentResolver.class);
+        //获取接口的实现
+        Map<String, Object> resolvers = getBeanInterfaceImpl(HandlerMethodArgumentResolver.class);
         
-        int paramIndex = 0;
-        int i = 0;
+        int paramIndex = 0, i = 0;
         for (Class<?> paramClazz : paramList) {
-            for (Map.Entry<String, Object> entry : argumentResolvers.entrySet()) {
+            for (Map.Entry<String, Object> entry : resolvers.entrySet()) {
                 HandlerMethodArgumentResolver resolver = (HandlerMethodArgumentResolver)entry.getValue();
                 MethodParameter warp = new MethodParameter(paramClazz, paramIndex, method);
                 if (resolver.supportsParameter(warp)) {
@@ -47,9 +50,14 @@ public class HttpRequestHandlerAdapter implements HandlerAdapter, BeanFactoryAwa
         try {
             Object instance = beanFactory.get(handler.getControllerBeanName());
             obj = method.invoke(instance, args);
+            //如果调用方法没有传入HttpServletResponse参数，则自己封装
+            if (!Arrays.asList(paramList).contains(HttpServletResponse.class)) {
+                PrintWriter writer = response.getWriter();
+                writer.write(obj.toString());
+            }
             //移除ThreadLocal副本
             RequestContextHolder.resetRequestAttributes();
-        } catch (ReflectiveOperationException e) {
+        } catch (ReflectiveOperationException | IOException e) {
             view.setStatus(HttpStatus.EXPECTATION_FAILED);
             model.put("result", e.getLocalizedMessage());
             view.setModel(model);

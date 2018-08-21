@@ -40,18 +40,8 @@ public class UserController {
     }
 
     @RequestMapping("/insert")
-    public void insert(HttpServletRequest request,
-            HttpServletResponse response, String param) {
-        try {
-            PrintWriter pw = response.getWriter();
-            String result = jackService.insert(param);
-            
-            pw.write(result);
-        }
-        catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    public String insert(String param) {
+        return "success";
     }
     
     @RequestMapping("/update")
