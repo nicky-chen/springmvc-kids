@@ -5,6 +5,7 @@ import com.nicky.annotation.Service;
 import com.nicky.bean.BeanFactoryAware;
 import com.nicky.resolver.HandlerMethodArgumentResolver;
 import com.nicky.resolver.MethodParameter;
+import com.nicky.servlet.RequestContextHolder;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,20 +23,21 @@ public class HttpRequestHandlerAdapter implements HandlerAdapter, BeanFactoryAwa
     public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, HandlerMapping handler) {
 
         Method method = handler.getMethod();
-        Class<?>[] paramClazzs = method.getParameterTypes();
+        Class<?>[] paramList = method.getParameterTypes();
         
-        Object[] args = new Object[paramClazzs.length];
+        Object[] args = new Object[paramList.length];
         
         //实现了ArgumentResolver这个接口的实现类
         Map<String, Object> argumentResolvers = getBeanInterfaceImpl(HandlerMethodArgumentResolver.class);
         
         int paramIndex = 0;
         int i = 0;
-        for (Class<?> paramClazz : paramClazzs) {
+        for (Class<?> paramClazz : paramList) {
             for (Map.Entry<String, Object> entry : argumentResolvers.entrySet()) {
-                HandlerMethodArgumentResolver ar = (HandlerMethodArgumentResolver)entry.getValue();
-                if (ar.supportsParameter(new MethodParameter(paramClazz, paramIndex, method))) {
-                    args[i++] = ar.resolveArgument(request, response, paramClazz, paramIndex, method);
+                HandlerMethodArgumentResolver resolver = (HandlerMethodArgumentResolver)entry.getValue();
+                MethodParameter warp = new MethodParameter(paramClazz, paramIndex, method);
+                if (resolver.supportsParameter(warp)) {
+                    args[i++] = resolver.resolveArgument(request, response, warp);
                 }
             }
             paramIndex++;
@@ -46,6 +48,8 @@ public class HttpRequestHandlerAdapter implements HandlerAdapter, BeanFactoryAwa
         try {
             Object instance = beanFactory.get(handler.getControllerBeanName());
             obj = method.invoke(instance, args);
+            //移除ThreadLocal副本
+            RequestContextHolder.resetRequestAttributes();
         } catch (ReflectiveOperationException e) {
             view.setStatus(HttpStatus.EXPECTATION_FAILED);
             model.put("result", e.getLocalizedMessage());
