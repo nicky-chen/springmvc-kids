@@ -8,20 +8,7 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public String query(String param) {
-        
-        return this.getClass().getName() + "query";
+       return "User:{name = nicky, age = 23}" ;
     }
-    
-    @Override
-    public String insert(String param) {
-        // TODO Auto-generated method stub
-        return this.getClass().getName() + "insert";
-    }
-    
-    @Override
-    public String update(String param) {
-        // TODO Auto-generated method stub
-        return this.getClass().getName() + "update";
-    }
-    
+
 }
