@@ -1,6 +1,5 @@
 package com.nicky.servlet;
 
-
 import com.nicky.annotation.Controller;
 import com.nicky.annotation.RequestMapping;
 import com.nicky.annotation.Service;
@@ -16,9 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.annotation.Annotation;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -86,7 +86,16 @@ public class DispatcherServlet extends FrameworkServlet {
         }
         Service annotation = cls.getAnnotation(Service.class);
         HandlerAdapter ha = (HandlerAdapter) applicationContext.getBeanFactory().get(annotation.beanName());
-        ha.handle(request, response, handlerMappings.get(path));
+        HandlerMapping handlerMapping = handlerMappings.get(path);
+        if (handlerMapping == null) {
+            try {
+                PrintWriter pw = response.getWriter();
+                pw.write("404, page not found");
+            } catch (IOException e) {
+                e.getLocalizedMessage();
+            }
+        }
+        ha.handle(request, response, handlerMapping);
         
     }
     

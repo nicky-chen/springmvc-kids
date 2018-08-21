@@ -1,14 +1,8 @@
 package com.nicky.servlet;
 
-
-import com.nicky.bean.ApplicationContext;
-import com.nicky.bean.ApplicationContextAware;
-import com.nicky.bean.BeanFactoryAware;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 /**
  * @author nicky_chin [shuilianpiying@163.com]
@@ -17,7 +11,7 @@ import java.util.Map;
 public abstract class FrameworkServlet extends HttpServlet {
 
     protected final void processRequest(HttpServletRequest request, HttpServletResponse response) {
-
+        RequestContextHolder.resetRequestAttributes();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request, response));
     }
 

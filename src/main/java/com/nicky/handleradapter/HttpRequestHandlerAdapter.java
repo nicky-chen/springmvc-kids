@@ -1,6 +1,5 @@
 package com.nicky.handleradapter;
 
-
 import com.nicky.annotation.Service;
 import com.nicky.bean.BeanFactoryAware;
 import com.nicky.resolver.HandlerMethodArgumentResolver;
