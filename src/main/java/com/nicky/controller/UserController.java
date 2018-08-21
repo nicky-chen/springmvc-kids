@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller("testController")
-@RequestMapping("/jack")
+@RequestMapping("/user")
 public class UserController {
     
     @Autowired
