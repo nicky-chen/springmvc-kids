@@ -29,19 +29,15 @@ public class RequestParamArgumentResolver extends AbstractOrderResolver {
     public Object resolveArgument(HttpServletRequest request, HttpServletResponse response, MethodParameter methodParameter) {
 
         Annotation[][] an = methodParameter.getMethod().getParameterAnnotations();
-        
         Annotation[] paramAns = an[methodParameter.getParamIndex()];
         
         for (Annotation paramAn : paramAns) {
             if (RequestParam.class.isAssignableFrom(paramAn.getClass())) {
                 RequestParam rp = (RequestParam)paramAn;
-                
                 String value = rp.value();
-                System.out.println("value : " + value);
                return request.getParameter(value);
             }
         }
-        
         return null;
     }
 

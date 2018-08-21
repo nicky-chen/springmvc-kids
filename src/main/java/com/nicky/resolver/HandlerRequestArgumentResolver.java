@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Service(beanName = "httpServletRequestArgumentResolver")
 @Order(10)
-public class HttpServletRequestArgumentResolver extends AbstractOrderResolver {
+public class HandlerRequestArgumentResolver extends AbstractOrderResolver {
     
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
