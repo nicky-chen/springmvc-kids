@@ -1,13 +1,11 @@
 package com.nicky.resolver;
 
-
 import com.nicky.annotation.RequestParam;
 import com.nicky.annotation.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 
 @Service
 public class RequestParamArgumentResolver extends AbstractOrderResolver {
@@ -28,13 +26,11 @@ public class RequestParamArgumentResolver extends AbstractOrderResolver {
     }
     
     @Override
-    public Object resolveArgument(HttpServletRequest request,
-            HttpServletResponse response, Class<?> type, int paramIndex,
-            Method method) {
+    public Object resolveArgument(HttpServletRequest request, HttpServletResponse response, MethodParameter methodParameter) {
+
+        Annotation[][] an = methodParameter.getMethod().getParameterAnnotations();
         
-        Annotation[][] an = method.getParameterAnnotations();
-        
-        Annotation[] paramAns = an[paramIndex];
+        Annotation[] paramAns = an[methodParameter.getParamIndex()];
         
         for (Annotation paramAn : paramAns) {
             if (RequestParam.class.isAssignableFrom(paramAn.getClass())) {

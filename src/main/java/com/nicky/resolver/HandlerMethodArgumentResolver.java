@@ -4,17 +4,12 @@ import com.nicky.annotation.Order;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.stream.Stream;
 
 public interface HandlerMethodArgumentResolver {
     
     boolean supportsParameter(MethodParameter methodParameter);
     
-    Object resolveArgument(HttpServletRequest request, HttpServletResponse response, Class<?> type, int paramIndex,
-            Method method);
+    Object resolveArgument(HttpServletRequest request, HttpServletResponse response, MethodParameter methodParameter);
 
     default int getOrderAnnotationValue(){
         Order annotation = this.getClass().getAnnotation(Order.class);
