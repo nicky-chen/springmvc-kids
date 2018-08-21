@@ -91,6 +91,7 @@ public class DispatcherServlet extends FrameworkServlet {
             try {
                 PrintWriter pw = response.getWriter();
                 pw.write("404, page not found");
+                return;
             } catch (IOException e) {
                 e.getLocalizedMessage();
             }

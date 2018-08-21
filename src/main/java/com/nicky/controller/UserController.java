@@ -39,7 +39,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/insert")
+    @RequestMapping("/insert.do")
     public String insert(String param) {
         return "success";
     }

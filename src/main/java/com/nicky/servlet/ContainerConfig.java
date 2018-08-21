@@ -16,7 +16,8 @@ public class ContainerConfig {
     public ServletRegistrationBean MyServlet1(){
         ServletRegistrationBean bean = new ServletRegistrationBean();
         bean.setServlet(new DispatcherServlet());
-        bean.addUrlMappings("/*");
+        bean.getUrlMappings().clear();
+        bean.addUrlMappings("/user/*");
         return bean;
     }
 

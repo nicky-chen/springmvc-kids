@@ -24,7 +24,6 @@ public class HttpRequestHandlerAdapter implements HandlerAdapter, BeanFactoryAwa
     @Override
     public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, HandlerMapping handler) {
 
-        System.out.println(handler);
         Method method = handler.getMethod();
         Class<?>[] paramList = method.getParameterTypes();
         
