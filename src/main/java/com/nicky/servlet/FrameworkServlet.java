@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class FrameworkServlet extends HttpServlet {
 
+    /**
+     * 保证单例servlet下的请求线程安全
+     */
     protected final void processRequest(HttpServletRequest request, HttpServletResponse response) {
         RequestContextHolder.resetRequestAttributes();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request, response));

@@ -7,7 +7,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Service(beanName = "httpServletResponseArgumentResolver")
+@Service(beanName = "handlerResponseArgumentResolver")
 @Order(1)
 public class HandlerResponseArgumentResolver extends AbstractOrderResolver {
     

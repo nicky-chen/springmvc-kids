@@ -85,7 +85,7 @@ public class DispatcherServlet extends FrameworkServlet {
             logger.error("adapter not found", e);
         }
         Service annotation = cls.getAnnotation(Service.class);
-        HandlerAdapter ha = (HandlerAdapter) applicationContext.getBeanFactory().get(annotation.beanName());
+        HandlerAdapter adapter = applicationContext.getBean(annotation.beanName(), HandlerAdapter.class);
         HandlerMapping handlerMapping = handlerMappings.get(path);
         if (handlerMapping == null) {
             try {
@@ -96,7 +96,7 @@ public class DispatcherServlet extends FrameworkServlet {
                 e.getLocalizedMessage();
             }
         }
-        ha.handle(request, response, handlerMapping);
+        adapter.handle(request, response, handlerMapping);
         
     }
     
