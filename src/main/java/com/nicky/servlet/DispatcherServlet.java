@@ -3,7 +3,6 @@ package com.nicky.servlet;
 import com.nicky.annotation.Controller;
 import com.nicky.annotation.RequestMapping;
 import com.nicky.annotation.Service;
-import com.nicky.bean.ApplicationContext;
 import com.nicky.handleradapter.HandlerAdapter;
 import com.nicky.handleradapter.HandlerMapping;
 import lombok.NoArgsConstructor;
@@ -37,8 +36,6 @@ public class DispatcherServlet extends FrameworkServlet {
     
     private static Properties prop;
 
-    private ApplicationContext applicationContext;
-
     private final String handlerAdapter = "spring.bean.handlerAdapter";
 
     static {
@@ -55,7 +52,6 @@ public class DispatcherServlet extends FrameworkServlet {
 
     @Override
     public void init(ServletConfig config) {
-        applicationContext = ApplicationContext.getApplicationContext();
         //处理映射
         handlerMapping();
         
