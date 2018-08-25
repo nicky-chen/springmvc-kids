@@ -21,8 +21,8 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Servlet implementation class DispatcherServlet
- * @author cx520
+ * @author nicky_chin [shuilianpiying@163.com]
+ * @since --created on 2018/8/21 at 16:38
  */
 @NoArgsConstructor
 @Service
